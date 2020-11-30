@@ -79,15 +79,9 @@ class CodelikeService(Service):
                 self.logger.info('no new likes found')
 
 
-if __name__ == '__main__':
+def handle_service(cmd):
     import sys
-
-    if len(sys.argv) != 2:
-        sys.exit('Syntax: %s COMMAND' % sys.argv[0])
-
-    cmd = sys.argv[1].lower()
     service = CodelikeService('codelike', pid_dir='/tmp')
-
     if cmd == 'start':
         service.start()
     elif cmd == 'stop':
@@ -99,3 +93,12 @@ if __name__ == '__main__':
             print("Service is not running.")
     else:
         sys.exit('Unknown command "%s".' % cmd)
+
+if __name__ == '__main__':
+    import sys
+
+    if len(sys.argv) != 2:
+        sys.exit('Syntax: %s COMMAND' % sys.argv[0])
+
+    cmd = sys.argv[1].lower()
+    handle_service(cmd)

@@ -6,46 +6,18 @@ import click
 import requests
 from git import Repo
 
+from codelike_service import handle_service
+from config import Config, read_config, write_config
 from shared import get_current_git_user
-
-CONFIG_PATH = '.codelike'
 
 
 @click.group()
 def main():
-    click.echo('hello world')
+    pass
 
-
-@main.command()
-def init():
-    repo = get_repo()
-    head = repo.head.commit.message
-    click.echo('Init')
-    firstOriginUrl = next(repo.remote('origin').urls)
-    click.echo(firstOriginUrl)
-
-    config: Config = {
-        'name': firstOriginUrl
-    }
-
-    with open(CONFIG_PATH, 'w+') as f:
-        f.write(json.dumps(config))
-    click.echo('initialized ' + config['name'])
-
-
-class Config(object):
-    name: str
-
-
-def read_config() -> Config:
-    with open(CONFIG_PATH, 'r') as f:
-        return json.loads(f.read())
-
-def remove_duplicates(l):
-    return list(dict.fromkeys(l))
 
 @click.command()
-@click.argument('file')
+@click.argument('file', type=click.Path(exists=True))
 @click.argument('from_line')
 @click.argument('to_line')
 def like(file, from_line, to_line):
@@ -78,10 +50,33 @@ def like(file, from_line, to_line):
     #     click.echo(c.author.email)
     #     click.echo(c.author + ': ' + l)
 
+@main.command()
+@click.argument('email')
+@click.option('--code', help='The access code you received via email.')
+def claim(email, code):
+    if code is not None:
+        write_config({'code': code, 'email': email})
+        click.echo(f'''You successfully claimed {email}. Once you started the git-like dameon you start receiving likes!''')
+    else:
+        requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/access', json.dumps({'email': email}),
+                      headers={'X-API-KEY': 'GwHQ9OUXum5EilDTmGJJB4nnFSEaKBle76DvSNz7'})
+        print(f'''We send you a confirmation mail. Claim your email by using: git-like claim {email} --code [CODE]''')
+
+@main.command()
+def start():
+    handle_service('start')
+
+@main.command()
+def stop():
+    handle_service('start')
+
+def remove_duplicates(l):
+    return list(dict.fromkeys(l))
+
 
 def get_repo():
     return Repo(os.getcwd())
 
 
 if __name__ == '__main__':
-    like()
+    main()
