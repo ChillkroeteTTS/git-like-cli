@@ -5,10 +5,13 @@ import platform
 from datetime import datetime
 import time
 
+import click
 import requests
 from dateutil.tz import tzlocal, tzoffset
 
 from service import find_syslog, Service
+
+from config import read_config
 from shared import get_current_git_user
 
 
@@ -52,18 +55,23 @@ class CodelikeService(Service):
 
     def poll_new_likes(self, user):
         newLastChecked = get_current_utc_iso()
+        config = read_config()
 
         self.logger.info(self.lastChecked + ' ' + user)
         payload = {
             'user': user,
-            'lastChecked': self.lastChecked
+            'lastChecked': self.lastChecked,
+            'code': config['code']
         }
         r = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/newLikes', json.dumps(payload),
                           headers={'X-API-KEY': 'GwHQ9OUXum5EilDTmGJJB4nnFSEaKBle76DvSNz7'})
-        self.lastChecked = newLastChecked
-        self.logger.info(r.status_code)
-        self.logger.info(r.json())
-        return r.json()
+        if r.status_code == 200:
+            self.lastChecked = newLastChecked
+            self.logger.info(r.status_code)
+            self.logger.info(r.json())
+            return r.json()
+        else:
+            click.echo('There was a problem polling the latest likes. Have you claimed your email address?', config)
 
     def run(self):
         while not self.got_sigterm():
