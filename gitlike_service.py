@@ -12,7 +12,7 @@ from dateutil.tz import tzlocal, tzoffset
 from service import find_syslog, Service
 
 from config import read_config
-from shared import get_current_git_user
+from shared import get_current_git_user, get_api_key
 
 
 def get_current_utc_iso():
@@ -64,7 +64,7 @@ class CodelikeService(Service):
             'code': config['code']
         }
         r = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/newLikes', json.dumps(payload),
-                          headers={'X-API-KEY': 'GwHQ9OUXum5EilDTmGJJB4nnFSEaKBle76DvSNz7'})
+                          headers={'X-API-KEY': get_api_key()})
         if r.status_code == 200:
             self.lastChecked = newLastChecked
             self.logger.info(r.status_code)

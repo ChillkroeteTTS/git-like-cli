@@ -1,6 +1,9 @@
 import re
 from os.path import expanduser
 
+def get_api_key():
+    return open('./apiKey').read().replace('\n', '')
+
 
 def get_current_git_user():
     with open(expanduser("~") + '/.gitconfig', 'r') as f:
