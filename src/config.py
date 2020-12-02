@@ -8,6 +8,7 @@ CONFIG_PATH = '.gitlike'
 class Config(object):
     email: str
     code: str
+    lastChecked: str
 
 def config_is_valid() -> bool:
     config = read_config()

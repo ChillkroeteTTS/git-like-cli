@@ -11,7 +11,7 @@ from dateutil.tz import tzlocal, tzoffset
 
 from service import Service
 
-from src.config import read_config
+from src.config import read_config, write_config
 from src.shared import get_current_git_user, get_api_key
 
 
@@ -50,7 +50,12 @@ class CodelikeService(Service):
         path = expanduser('~') + '/.gitlike.log'
         self.logger.addHandler(logging.FileHandler(path))
         self.logger.setLevel(logging.INFO)
-        self.lastChecked = get_current_utc_iso()
+        config = read_config()
+
+        if 'lastChecked' in config.keys():
+            self.lastChecked = config['lastChecked']
+        else:
+            self.lastChecked = get_current_utc_iso()
 
     def poll_new_likes(self, user):
         newLastChecked = get_current_utc_iso()
@@ -65,7 +70,8 @@ class CodelikeService(Service):
         r = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/newLikes', json.dumps(payload),
                           headers={'X-API-KEY': get_api_key()})
         if r.status_code == 200:
-            # self.lastChecked = newLastChecked
+            self.lastChecked = newLastChecked
+            write_config({'lastChecked': newLastChecked})
             # self.logger.info(r.status_code)
             # self.logger.info(r.json())
             return r.json()
