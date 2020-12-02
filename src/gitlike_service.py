@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 import platform
 from datetime import datetime
 import time
@@ -10,10 +9,10 @@ import click
 import requests
 from dateutil.tz import tzlocal, tzoffset
 
-from service import find_syslog, Service
+from service import Service
 
-from config import read_config
-from shared import get_current_git_user, get_api_key
+from src.config import read_config
+from src.shared import get_current_git_user, get_api_key
 
 
 def get_current_utc_iso():
@@ -49,7 +48,6 @@ class CodelikeService(Service):
     def __init__(self, *args, **kwargs):
         super(CodelikeService, self).__init__(*args, **kwargs)
         path = expanduser('~') + '/.gitlike.log'
-        print('Logging: ', path)
         self.logger.addHandler(logging.FileHandler(path))
         self.logger.setLevel(logging.INFO)
         self.lastChecked = get_current_utc_iso()
@@ -92,6 +90,8 @@ def handle_service(cmd):
     import sys
     service = CodelikeService('codelike', pid_dir='/tmp')
     if cmd == 'start':
+        path = expanduser('~') + '/.gitlike.log'
+        print('Logging: ', path)
         service.start()
     elif cmd == 'stop':
         service.stop()

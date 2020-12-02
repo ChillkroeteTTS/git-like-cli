@@ -1,3 +1,6 @@
 venv
 apiKey
 .idea
+dist
+build
+git_like.egg-info

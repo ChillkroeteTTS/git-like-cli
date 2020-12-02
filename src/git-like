@@ -1,15 +1,15 @@
-import functools
+#!/usr/bin/env python
+
 import json
-import os
 
 import click
 import requests
 from git import Repo
 
-from config import Config, read_config, write_config, get_config_path, config_is_valid
-from git_wrapper import git_blame
-from gitlike_service import handle_service
-from shared import get_current_git_user, get_api_key
+from src.config import write_config, get_config_path, config_is_valid
+from src.git_wrapper import git_blame
+from src.gitlike_service import handle_service
+from src.shared import get_current_git_user, get_api_key
 
 
 @click.group()
