@@ -45,5 +45,15 @@ $ git-like start
 $ git-like stop
 ```
 
+Git-like uses the email in your commits and in your ~/.gitconfig file to identify you. Be sure to configure your config correctly to receive likes.
+
+## Privacy
+We only collect metadata. So your code is safe.
+Git-like collects following information when you like a piece of code:
+- your email
+- authors email
+- line number
+- git project url
+
 ## Integrations
 A Jetbrains Intellij plugin is WIP.

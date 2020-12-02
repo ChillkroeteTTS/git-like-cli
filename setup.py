@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="git-like", # Replace with your own username
-    version="0.0.2",
+    version="0.0.4",
     author="Tjark Smalla",
     scripts=['src/git-like'],
     author_email="tjark.smalla@git-like.com",
