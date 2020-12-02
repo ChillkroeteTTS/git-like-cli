@@ -75,7 +75,8 @@ class CodelikeService(Service):
     def run(self):
         while not self.got_sigterm():
             self.logger.info("I'm working...")
-            time.sleep(5)
+            sleep_time_s = 60
+            time.sleep(sleep_time_s)
             current_user = get_current_git_user()
             likes = self.poll_new_likes(current_user)
             if len(likes) > 0:
