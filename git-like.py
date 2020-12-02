@@ -43,6 +43,7 @@ def like(file, from_line, to_line):
         l = own_commits[0]['line']
         click.echo(f"Please only like committed lines. You tried to like recent changes in line {lNo}: {l}")
     else:
+        project = next(repo.remote('origin').urls)
         like = {
             'from_l': from_l_int,
             'to_l': to_l_int,
@@ -50,13 +51,18 @@ def like(file, from_line, to_line):
             'by': get_current_git_user(),
             'email': emails[0],
             'file': file,
-            'project': next(repo.remote('origin').urls),
+            'project': project,
             'commit_rev': revs[0]
         }
-        print(like)
-        requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/like',
+        # print(like)
+        res = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/like',
                       json.dumps(like),
                       headers={'X-API-KEY': get_api_key()})
+
+        if res.status_code == 200:
+            click.echo(f'''\u001b[32mLiked line {from_l_int} to {to_l_int} in {file} @ {project}\u001b[37m''')
+        else:
+            click.echo(f'''\u001b[31mUps... Something went wrong. Sry for that.\u001b[37m''')
         # for c, l in flattened_blame:
         #     click.echo(c.author.email)
         #     click.echo(c.author + ': ' + l)
@@ -71,13 +77,25 @@ def claim(email, code):
         validationRes = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/access/validate',
                       json.dumps({'user': email, 'code': code}),
                       headers={'X-API-KEY': get_api_key()})
-        print(validationRes.text)
+        # print(validationRes.text)
         isValid = validationRes.json()['isValid']
 
         if isValid:
             write_config({'code': code, 'email': email})
             click.echo(
-                f'''You successfully claimed {email}. Once you started the git-like dameon process you will start receiving likes!''')
+                f'''
+You successfully claimed {email}. 
+Once you started the git-like dameon process you will start receiving likes!
+
+Liking a file:
+$ git-like like FILE LINE_FROM LINE_TO
+
+Starting the git-like daemon:
+\u001b[32m$ git-like start \u001b[37m
+
+Stopping the git-like daemon:
+\u001b[31m$ git-like stop \u001b[37m
+''')
         else:
             click.echo('The provided access code was invalid.')
             exit(1)
@@ -86,7 +104,8 @@ def claim(email, code):
         requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/access',
                       json.dumps({'email': email}),
                       headers={'X-API-KEY': get_api_key()})
-        print(f'''We send you a confirmation mail. Claim your email by using: git-like claim {email} --code [CODE]''')
+        click.echo(f'''We send you a confirmation mail. Claim your email by using: git-like claim {email} --code [CODE].
+''')
 
 
 @main.command()
@@ -100,7 +119,7 @@ def start():
 def stop():
     if not config_is_valid():
         exit_with_invalid_config()
-    handle_service('start')
+    handle_service('stop')
 
 
 def exit_with_invalid_config():

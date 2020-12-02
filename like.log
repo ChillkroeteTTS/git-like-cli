@@ -16847,3 +16847,49 @@ Traceback (most recent call last):
   File "/Users/tts/workspace/codelike/cli/venv/lib/python3.8/site-packages/requests/adapters.py", line 516, in send
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='1nvgpilww4.execute-api.eu-central-1.amazonaws.com', port=443): Max retries exceeded with url: /dev/newLikes (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1070242b0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+I'm working...
+2020-12-02T13:16:40.7095Z tjark.smalla@gmail.com
+[Errno 2] No such file or directory: './apiKey'
+Traceback (most recent call last):
+  File "/Users/tts/workspace/codelike/cli/venv/lib/python3.8/site-packages/service/__init__.py", line 495, in runner
+    self.run()
+  File "/Users/tts/workspace/codelike/cli/gitlike_service.py", line 81, in run
+    likes = self.poll_new_likes(current_user)
+  File "/Users/tts/workspace/codelike/cli/gitlike_service.py", line 67, in poll_new_likes
+    headers={'X-API-KEY': get_api_key()})
+  File "/Users/tts/workspace/codelike/cli/shared.py", line 5, in get_api_key
+    return open('./apiKey').read().replace('\n', '')
+FileNotFoundError: [Errno 2] No such file or directory: './apiKey'
+I'm working...
+2020-12-02T13:18:40.7908Z tjark.smalla@gmail.com
+[Errno 2] No such file or directory: './apiKey'
+Traceback (most recent call last):
+  File "/Users/tts/workspace/codelike/cli/venv/lib/python3.8/site-packages/service/__init__.py", line 495, in runner
+    self.run()
+  File "/Users/tts/workspace/codelike/cli/gitlike_service.py", line 81, in run
+    likes = self.poll_new_likes(current_user)
+  File "/Users/tts/workspace/codelike/cli/gitlike_service.py", line 67, in poll_new_likes
+    headers={'X-API-KEY': get_api_key()})
+  File "/Users/tts/workspace/codelike/cli/shared.py", line 5, in get_api_key
+    return open('./apiKey').read().replace('\n', '')
+FileNotFoundError: [Errno 2] No such file or directory: './apiKey'
+I'm working...
+2020-12-02T13:20:05.1823Z tjark.smalla@gmail.com
+200
+[]
+no new likes found
+I'm working...
+2020-12-02T13:20:10.1974Z tjark.smalla@gmail.com
+200
+[]
+no new likes found
+I'm working...
+2020-12-02T13:20:16.3642Z tjark.smalla@gmail.com
+200
+[]
+no new likes found
+I'm working...
+2020-12-02T13:20:21.5119Z tjark.smalla@gmail.com
+200
+[]
+no new likes found

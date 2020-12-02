@@ -4,6 +4,7 @@ import os
 import platform
 from datetime import datetime
 import time
+from os.path import expanduser
 
 import click
 import requests
@@ -47,9 +48,9 @@ class CodelikeService(Service):
 
     def __init__(self, *args, **kwargs):
         super(CodelikeService, self).__init__(*args, **kwargs)
-        path = str.join('/', find_syslog().split('/')[:-1]) + '/codelike.log'
-        print(path)
-        self.logger.addHandler(logging.FileHandler(os.getcwd() + '/like.log'))
+        path = expanduser('~') + '/.gitlike.log'
+        print('Logging: ', path)
+        self.logger.addHandler(logging.FileHandler(path))
         self.logger.setLevel(logging.INFO)
         self.lastChecked = get_current_utc_iso()
 

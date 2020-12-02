@@ -2,7 +2,7 @@ import re
 from os.path import expanduser
 
 def get_api_key():
-    return open('./apiKey').read().replace('\n', '')
+    return 'GwHQ9OUXum5EilDTmGJJB4nnFSEaKBle76DvSNz7'
 
 
 def get_current_git_user():
