@@ -4,7 +4,7 @@
 
 When browsing the code base of coworkers or open-source projects I often find myself appreciating the work of my fellow coders.
 Be it because they found a smart solution for a problem or just because they kept to a certain style guide we committed on.
-However, with communication being can be a tedious task which distracts the sender as well as the receiver, this appreciation stays usually in my head.
+However, communication can be a tedious task which distracts the sender as well as the receiver, so the appreciation usually does not cross the borders of my brain.
 
 Git-like is a small CLI which aims to make everyday life of us programmers a bit more collaborative, fun and finally - rewarding. 
 
