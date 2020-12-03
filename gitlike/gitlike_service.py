@@ -1,18 +1,15 @@
-import json
 import logging
 import platform
 from datetime import datetime
 import time
 from os.path import expanduser
 
-import click
-import requests
 from dateutil.tz import tzlocal, tzoffset
 
 from service import Service
 
 from src.config import read_config, write_config
-from src.shared import get_current_git_user, get_api_key
+from src.shared import  get_likes
 
 
 def get_current_utc_iso():
@@ -57,34 +54,20 @@ class CodelikeService(Service):
         else:
             self.lastChecked = get_current_utc_iso()
 
-    def poll_new_likes(self, user):
+    def poll_new_likes(self):
         newLastChecked = get_current_utc_iso()
-        config = read_config()
-
-        # self.logger.info(self.lastChecked + ' ' + user)
-        payload = {
-            'user': user,
-            'lastChecked': self.lastChecked,
-            'code': config['code']
-        }
-        r = requests.post('https://1nvgpilww4.execute-api.eu-central-1.amazonaws.com/dev/newLikes', json.dumps(payload),
-                          headers={'X-API-KEY': get_api_key()})
-        if r.status_code == 200:
-            self.lastChecked = newLastChecked
-            write_config({'lastChecked': newLastChecked})
-            # self.logger.info(r.status_code)
-            # self.logger.info(r.json())
-            return r.json()
-        else:
-            click.echo('There was a problem polling the latest likes. Have you claimed your email address?', config)
+        get_likes(self.lastChecked)
+        self.lastChecked = newLastChecked
+        write_config({'lastChecked': newLastChecked})
 
     def run(self):
         while not self.got_sigterm():
             # self.logger.info("I'm working...")
             sleep_time_s = 60
             time.sleep(sleep_time_s)
-            current_user = get_current_git_user()
-            likes = self.poll_new_likes(current_user)
+
+            likes = self.poll_new_likes()
+
             if len(likes) > 0:
                 # self.logger.info('new likes found!!!')
                 for like in likes:

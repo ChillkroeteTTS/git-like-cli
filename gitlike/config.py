@@ -10,6 +10,7 @@ class Config(object):
     code: str
     lastChecked: str
 
+
 def config_is_valid() -> bool:
     config = read_config()
     email = config['email']
@@ -18,9 +19,11 @@ def config_is_valid() -> bool:
     code_is_valid = len(code) > 0
     return email_is_valid and code_is_valid
 
+
 def read_config() -> Config:
     with open(get_config_path(), 'r') as f:
         return json.loads(f.read())
+
 
 def write_config(partial):
     if os.path.isfile(get_config_path()):

@@ -1,15 +1,16 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
+import itertools
 import json
+from pprint import pprint
 
 import click
 import requests
 from git import Repo
 
-from src.config import write_config, get_config_path, config_is_valid
-from src.git_wrapper import git_blame
-from src.gitlike_service import handle_service
-from src.shared import get_current_git_user, get_api_key
+from gitlike.config import write_config, get_config_path, config_is_valid
+from gitlike.git_wrapper import git_blame
+from gitlike.gitlike_service import handle_service
+from gitlike.shared import get_api_key, get_current_git_user, get_likes
 
 
 @click.group()
@@ -122,6 +123,11 @@ def stop():
         exit_with_invalid_config()
     handle_service('stop')
 
+@main.command()
+def ls():
+    likes = get_likes()
+    project_sorted = dict(itertools.groupby(likes, lambda like: like['project']))
+    pprint(project_sorted)
 
 def exit_with_invalid_config():
     click.echo(
