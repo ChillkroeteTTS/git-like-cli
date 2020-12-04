@@ -1,5 +1,5 @@
 # git-like
-
+[![PyPi version](https://pypip.in/v/git-like/badge.png)](https://crate.io/packages/git-like/)
 > Give your coworkers the appreciation they deserve without enduring the complex dynamics of social interaction.
 
 When browsing the code base of coworkers or open-source projects I often find myself appreciating the work of my fellow coders.
