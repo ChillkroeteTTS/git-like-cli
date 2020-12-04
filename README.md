@@ -25,7 +25,7 @@ You are 4 steps apart from liking and receiving likes:
 
 ### 1) Installation
 ```
-$ pip install git-like
+$ python3 -m pip install git-like
 ```
 
 ### 2) Claiming your email address
