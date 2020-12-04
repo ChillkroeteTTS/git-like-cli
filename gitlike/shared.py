@@ -1,11 +1,13 @@
 import json
 import re
 from os.path import expanduser
+from pprint import pprint
 
 import click
 import requests
+from git import Repo
 
-from src.config import read_config
+from gitlike.config import read_config
 
 
 def get_api_key():
@@ -21,6 +23,9 @@ def get_current_git_user():
         return email
     else:
         print('Could not find gitconfig with email', lines)
+
+def get_repo():
+    return Repo(search_parent_directories=True)
 
 
 def get_likes(last_checked=None):
@@ -40,5 +45,8 @@ def get_likes(last_checked=None):
         # self.logger.info(r.json())
         return r.json()
     else:
-        click.echo('There was a problem polling the latest likes. Have you claimed your email address?', config)
+        click.echo('There was a problem polling the latest likes. Have you claimed your email address?')
+        pprint(r.status_code)
+        pprint(r.json())
+        pprint(config)
         exit(1)

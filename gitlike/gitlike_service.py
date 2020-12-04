@@ -8,8 +8,8 @@ from dateutil.tz import tzlocal, tzoffset
 
 from service import Service
 
-from src.config import read_config, write_config
-from src.shared import  get_likes
+from gitlike.config import read_config, write_config
+from gitlike.shared import  get_likes
 
 
 def get_current_utc_iso():

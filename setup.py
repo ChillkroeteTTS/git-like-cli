@@ -7,7 +7,7 @@ setuptools.setup(
     name="git-like", # Replace with your own username
     version="0.0.6",
     author="Tjark Smalla",
-    scripts=['src/git-like'],
+    scripts=['gitlike/git-like'],
     author_email="tjark.smalla@git-like.com",
     description="A small cli to like and receive likes four your code in a git controlled code base.",
     long_description=long_description,
